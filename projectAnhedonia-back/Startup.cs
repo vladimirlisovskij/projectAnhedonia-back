@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using projectAnhedonia_back.Data.DI;
-using projectAnhedonia_back.Data.Models;
 using projectAnhedonia_back.Domain.DI;
 
 namespace projectAnhedonia_back
@@ -25,6 +23,8 @@ namespace projectAnhedonia_back
             services.AddControllers();
             services.AddDataBindings();
             services.AddDomainBindings();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,9 +41,14 @@ namespace projectAnhedonia_back
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
             {
-                endpoints.MapControllers();
+                c.SwaggerEndpoint("/swagger", "My API V1");
+                c.RoutePrefix = string.Empty;
             });
         }
     }

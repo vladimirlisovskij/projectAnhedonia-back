@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using projectAnhedonia_back.Domain.Entity;
 using projectAnhedonia_back.Domain.Repository;
 
 namespace projectAnhedonia_back.Domain.Usecase
 {
-    public class GetAllTestItemsCase
+    public class GetTestItemByIdCase
     {
         private readonly IDataBaseRepository _repository;
 
-        public GetAllTestItemsCase(IDataBaseRepository repository)
+        public GetTestItemByIdCase(IDataBaseRepository repository)
         {
             _repository = repository;
         }
 
-        public Task<List<TestItemDto>> GetAllTestItems() => _repository.GetAllTestItems();
+        public Task<TestItemDto> GetItemById(long id) => _repository.GetItemById(id);
     }
 }

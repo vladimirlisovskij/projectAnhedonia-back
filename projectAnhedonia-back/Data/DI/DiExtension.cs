@@ -22,7 +22,7 @@ namespace projectAnhedonia_back.Data.DI
         
         static void BindRepository(this IServiceCollection services)
         {
-            services.AddScoped<IDataBaseRepository, DataBaseRepository>();
+            services.AddTransient<IDataBaseRepository, DataBaseRepository>();
         }
     }
 }
