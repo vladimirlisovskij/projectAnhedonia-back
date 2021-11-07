@@ -1,18 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using projectAnhedonia_back.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using projectAnhedonia_back.Data.Common;
+using projectAnhedonia_back.Domain.Common;
 
 namespace projectAnhedonia_back
 {
@@ -26,13 +18,10 @@ namespace projectAnhedonia_back
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
-            // ��������� ����, ����� ������� ����� ���� ������ ������������ � ������� IP � ������.
-            // ������, ���� �� ����� ����� (���� ��� �� �����, ��� ����� ����������� �����)
             services.AddCors(options =>
             {
                 options.AddPolicy(allowSpecificOrigins,
@@ -42,22 +31,13 @@ namespace projectAnhedonia_back
                         .SetIsOriginAllowed((host) => true)
                         .AllowAnyHeader());
             });
-
-            // ��� ��� � ���� ��� ����� dependency injection, � ������� � �������.
-            // ��� ��� ServiceLifetime.Transient ��������, ��� �� ������ ������ ����� ���� �����������
-            // MainDatabaseContext, �.�. ������ ������ ����� ����� � �� ��� ������� ������������
-            services.AddDbContext<MainDatabaseContext>(options =>
-            {
-                options.UseSqlite("Data source=db/MainDatabase.db");
-            },
-                ServiceLifetime.Transient
-            );
-
-            // �� ����� ������� �� ��������� ��� ������������� �������, � ��������� ;)
+            
             services.AddSwaggerGen();
+            
+            services.AddDataLayerBindings();
+            services.AddDomainLayerBindings();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
@@ -83,11 +63,7 @@ namespace projectAnhedonia_back
                 endpoints.MapControllers();
             });
 
-            // �������������� ��, ���� � ������ ��� �� ����, �� ����� � ������ ��
-            if (!File.Exists("db/MainDatabase.db"))
-            {
-                File.Copy("db/MainDatabase_empty.db", "db/MainDatabase.db");
-            }
+            app.ConfigureDataLayer();
         }
     }
 }
