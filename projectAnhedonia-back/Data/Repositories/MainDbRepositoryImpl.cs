@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using projectAnhedonia_back.Common;
 using projectAnhedonia_back.Data.Entities.Dto;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 using projectAnhedonia_back.Data.Models.Database.Main;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
@@ -26,6 +27,21 @@ namespace projectAnhedonia_back.Data.Repositories
         {
             return _context
                 .AddUser(userRegistration.ConvertToDataLayer())
+                .MapError(errors =>
+                {
+                    var error = errors[0];
+                    return error switch
+                    {
+                        DbUpdateException => new InvalidEntityKeyException("the database already contains this key"),
+                        _ => new UnknownException(error.Message)
+                    };
+                });
+        }
+
+        public Task UpdateUserProfileById(UserUpdateDto profileInfo)
+        {
+            return _context
+                .UpdateUser(profileInfo.ConvertToDataLayer())
                 .MapError(errors =>
                 {
                     var error = errors[0];
@@ -84,20 +100,24 @@ namespace projectAnhedonia_back.Data.Repositories
                 .MapResult(u => u.ConvertToDomainLayer());
         }
 
-        public Task<long> GetIdByUsername(string username)
+        public Task ChangeUserPasswordById(UserChangePasswordDto userChangePasswordDto)
         {
             return _context
-                .GetIdByUsername(username)
+                .ChangeUserPassword(userChangePasswordDto.ConvertToDataLayer())
                 .MapError(errors =>
                 {
                     var error = errors[0];
                     return error switch
                     {
-                        InvalidOperationException => new InvalidEntityKeyException(
-                            "the database does not contain an item with this key"),
+                        DbUpdateException => new InvalidEntityKeyException("the database already contains this key"),
                         _ => new UnknownException(error.Message)
                     };
                 });
+        }
+
+        public Task<long> GetIdByCreds(UserCredsDto creds)
+        {
+            return _context.GetUserIdByCreds(creds.ConvertToDataLayer());
         }
 
         public Task CreateArticle(ArticleRegistrationDto data)
@@ -115,10 +135,25 @@ namespace projectAnhedonia_back.Data.Repositories
                 });
         }
 
-        public Task RemoveArticleById(long id)
+        public Task UpdateArticle(ArticleUpdateDto data)
         {
             return _context
-                .RemoveArticleById(id)
+                .UpdateArticle(data.ConvertToDataLayer())
+                .MapError(errors =>
+                {
+                    var error = errors[0];
+                    return error switch
+                    {
+                        DbUpdateException => new InvalidEntityKeyException("the database already contains this key"),
+                        _ => new UnknownException(error.Message)
+                    };
+                });
+        }
+
+        public Task RemoveArticleById(long selfId, long articleId)
+        {
+            return _context
+                .RemoveArticleById(selfId, articleId)
                 .MapError(errors =>
                 {
                     var error = errors[0];

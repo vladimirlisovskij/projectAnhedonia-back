@@ -14,6 +14,7 @@ namespace projectAnhedonia_back.Domain.Common
         {
             services.AddScoped<MainDbInteractor>();
             services.AddScoped<TestInteractor>();
+            services.AddScoped<AuthorizationInteractor>();
         }
     }
 }

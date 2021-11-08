@@ -41,9 +41,19 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                 .FirstAsync();
         }
 
-        public Task<int> RemoveArticleById(long id)
+        public Task<int> RemoveArticleById(long selfId, long articleId)
         {
-            Posts.Remove(new Post {Id = id});
+            Posts.Remove(new Post {AuthorId = selfId, Id = articleId});
+            return SaveChangesAsync();
+        }
+
+        public Task<int> UpdateArticle(Post article)
+        {
+            var oldArticle = Posts.First(a => a.Id == article.Id && a.AuthorId == article.AuthorId);
+
+            oldArticle.Title = article.Title;
+            oldArticle.Content = article.Content;
+
             return SaveChangesAsync();
         }
     }

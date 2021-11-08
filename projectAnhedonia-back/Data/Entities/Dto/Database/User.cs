@@ -23,6 +23,11 @@ namespace projectAnhedonia_back.Data.Entities.Dto
             set => _password = sha256_hash(value);
         }
 
+        public void SetShaPassword(string shaPassword)
+        {
+            _password = shaPassword;
+        }
+
         public string About { get; set; }
         public DateTime RegistrationDate { get; set; }
 
@@ -63,6 +68,24 @@ namespace projectAnhedonia_back.Data.Entities.Dto
                 Username = userRegistrationDto.Username,
                 Password = userRegistrationDto.Password,
                 RegistrationDate = DateTime.Now,
+            };
+        }
+        public static User ConvertToDataLayer(this UserUpdateDto userRegistrationDto)
+        {
+            return new User
+            {
+                Username = userRegistrationDto.Username,
+                Id = userRegistrationDto.Id,
+                About = userRegistrationDto.About
+            };
+        }
+        
+        public static User ConvertToDataLayer(this UserChangePasswordDto userRegistrationDto)
+        {
+            return new User
+            {
+                Id = userRegistrationDto.Id,
+                Password = userRegistrationDto.Password
             };
         }
     }

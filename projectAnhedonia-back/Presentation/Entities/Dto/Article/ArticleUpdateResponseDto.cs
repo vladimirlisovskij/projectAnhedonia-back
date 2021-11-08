@@ -2,22 +2,24 @@
 
 namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
 {
-    public class ArticleRegistrationResponseDto
+    public class ArticleUpdateResponseDto
     {
         public string Title { get; set; }
+        public long Id { get; set; }
         public string Content { get; set; }
     }
 
     public static partial class Mapper
     {
-        public static ArticleRegistrationDto ConvertToDomainLayer(
-            this ArticleRegistrationResponseDto articleRegistration,
+        public static ArticleUpdateDto ConvertToDomainLayer(
+            this ArticleUpdateResponseDto articleRegistration,
             long authorId
         )
         {
-            return new ArticleRegistrationDto(
+            return new ArticleUpdateDto(
                 articleRegistration.Title,
                 authorId,
+                articleRegistration.Id,
                 articleRegistration.Content
             );
         }

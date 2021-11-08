@@ -15,14 +15,19 @@ namespace projectAnhedonia_back.Domain.Repositories
         
         public Task<UserProfileDto> GetUserProfileById(long id);
 
-        // TODO change username to token or something else that we get after registration complete
-        public Task<long> GetIdByUsername(string username);
+        public Task UpdateUserProfileById(UserUpdateDto profileInfo);
+
+        public Task ChangeUserPasswordById(UserChangePasswordDto userChangePasswordDto);
+
+        public Task<long> GetIdByCreds(UserCredsDto creds);
 
         public Task CreateArticle(ArticleRegistrationDto data);
 
         public Task<ArticleViewDto> GetArticleById(long id);
         
-        public Task RemoveArticleById(long id);
+        public Task RemoveArticleById(long selfId, long articleId);
+
+        public Task UpdateArticle(ArticleUpdateDto data);
 
         // ======= only for test =======
         public Task<IEnumerable<UserProfileDto>> GetAllUsers();

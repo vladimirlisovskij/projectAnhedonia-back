@@ -39,5 +39,16 @@ namespace projectAnhedonia_back.Data.Entities.Dto
                 CreationDateTime = DateTime.Now,
             };
         }
+        
+        public static Post ConvertToDataLayer(this ArticleUpdateDto data)
+        {
+            return new Post
+            {
+                Title = data.Title,
+                AuthorId = data.AuthorId,
+                Id = data.ArticleId,
+                Content = data.Content,
+            };
+        }
     }
 }

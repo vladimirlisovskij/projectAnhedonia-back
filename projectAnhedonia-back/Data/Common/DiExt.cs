@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using projectAnhedonia_back.Data.Models.Authorization;
 using projectAnhedonia_back.Data.Models.Database.Main;
 using projectAnhedonia_back.Data.Repositories;
 using projectAnhedonia_back.Domain.Repositories;
@@ -22,11 +23,14 @@ namespace projectAnhedonia_back.Data.Common
                 },
                 ServiceLifetime.Transient
             );
+            
+            services.AddScoped<AuthorizationService>();
         }
         
         static void BindRepository(this IServiceCollection services)
         {
             services.AddScoped<IMainDbRepository, MainDbRepositoryImpl>();
+            services.AddScoped<IAuthorizationRepository, AuthorizationRepositoryImpl>();
         }
     }
 }
