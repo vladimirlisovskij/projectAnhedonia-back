@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
 
 namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
@@ -10,6 +11,8 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
         public long? AuthorId { get; set; }
 
         public string Content { get; set; }
+        
+        public IEnumerable<long> Comments { get; set; }
 
         public DateTime CreationDateTime { get; set; }
     }
@@ -23,7 +26,8 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
                 Title = articleView.Title,
                 Content = articleView.Content,
                 AuthorId = articleView.AuthorId,
-                CreationDateTime = articleView.CreationDateTime
+                CreationDateTime = articleView.CreationDateTime,
+                Comments = articleView.Comments
             };
         }
     }

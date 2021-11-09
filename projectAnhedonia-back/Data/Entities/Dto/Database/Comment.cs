@@ -1,8 +1,9 @@
 ﻿using System;
+using projectAnhedonia_back.Domain.Entities.Dto.Comment;
 
 #nullable disable
 
-namespace projectAnhedonia_back.Data.Entities.Dto
+namespace projectAnhedonia_back.Data.Entities.Dto.Database
 {
     public sealed class Comment
     {
@@ -11,8 +12,23 @@ namespace projectAnhedonia_back.Data.Entities.Dto
         public string Content { get; set; }
         public long PostId { get; set; }
         public DateTime CreationDateTime { get; set; }
-        
+
         public User Author { get; set; }
-        public Post Article { get; set; }
+        
+        public Post Post { get; set; }
+    }
+
+    public static partial class Mapper
+    {
+        public static Comment ConvertToDataLayer(this CommentCreateDto data)
+        {
+            return new Comment
+            {
+                PostId = data.PostId,
+                AuthorId = data.AuthorId,
+                Content = data.Content,
+                CreationDateTime = DateTime.Now,
+            };
+        }
     }
 }

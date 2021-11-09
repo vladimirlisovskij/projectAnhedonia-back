@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 using projectAnhedonia_back.Domain.Entities.Dto;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
 

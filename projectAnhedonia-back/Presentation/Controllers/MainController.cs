@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectAnhedonia_back.Common;
@@ -6,7 +7,9 @@ using projectAnhedonia_back.Domain.Interactors;
 using projectAnhedonia_back.Presentation.Common;
 using projectAnhedonia_back.Presentation.Entities.Dto;
 using projectAnhedonia_back.Presentation.Entities.Dto.Article;
+using projectAnhedonia_back.Presentation.Entities.Dto.Comment;
 using projectAnhedonia_back.Presentation.Entities.Dto.User;
+using projectAnhedonia_back.Presentation.Entities.Exceptions;
 using projectAnhedonia_back.Presentation.Filters;
 
 namespace projectAnhedonia_back.Presentation.Controllers
@@ -113,16 +116,37 @@ namespace projectAnhedonia_back.Presentation.Controllers
                 .ConvertToResult("User bearer");
         }
 
-        [HttpPost("selfId")]
-        public Result<long> GetSelfId()
+        [HttpPost("selfProfile")]
+        public async Task<Result<UserProfileResponseDto>> GetSelfId()
         {
-            return new Result<long>( "ok",  "Get self id", ExtractUserIdFromBearer());
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .GetUserProfileById(uid)
+                .MapResult(p => p.ConvertToPresentationLayer())
+                .ConvertToResult("Self profile");
         }
-        
+
+
+        [HttpPost("createSelfComment")]
+        public async Task<Result> CreateComment([FromBody] CommentCreateResponseDto data)
+        {
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .CreateComment(data.ConvertToDomainLayer(uid))
+                .ConvertToResult("Comment created");
+        }
+
         private long ExtractUserIdFromBearer()
         {
-            var token = Request.Headers["Authorization"].First().Split(" ").Last();
-            return _authorizationInteractor.GetUserIdFromBearer(token);
+            try
+            {
+                var token = Request.Headers["Authorization"].First().Split(" ").Last();
+                return _authorizationInteractor.GetUserIdFromBearer(token);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new RequireAuthorizationException("this request requires authorization. Check your token");
+            }
         }
     }
 }

@@ -61,15 +61,6 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                 .ToListAsync();
         }
 
-        // TODO change username to token or something else that we get after registration complete
-        public Task<long> GetIdByUsername(string username)
-        {
-            return Users
-                .Where(u => u.Username == username)
-                .Select(u => u.Id)
-                .FirstAsync();
-        }
-
         public Task<UserProfile> GetUserById(long id)
         {
             return Users

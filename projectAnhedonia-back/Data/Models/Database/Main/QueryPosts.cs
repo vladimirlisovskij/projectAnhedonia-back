@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using projectAnhedonia_back.Data.Entities.Dto;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 
 namespace projectAnhedonia_back.Data.Models.Database.Main
 {
@@ -22,7 +23,8 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                     Title = p.Title,
                     AuthorId = p.AuthorId,
                     Content = p.Content,
-                    CreationDateTime = p.CreationDateTime
+                    CreationDateTime = p.CreationDateTime,
+                    Comments = p.Comments.Select( p => p.Id)
                 })
                 .ToListAsync();
         }
@@ -36,7 +38,8 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                     Title = p.Title,
                     AuthorId = p.AuthorId,
                     Content = p.Content,
-                    CreationDateTime = p.CreationDateTime
+                    CreationDateTime = p.CreationDateTime,
+                    Comments = p.Comments.Select(c => c.Id)
                 })
                 .FirstAsync();
         }

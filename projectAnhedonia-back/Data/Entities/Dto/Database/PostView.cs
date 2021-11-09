@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
 
 #nullable disable
 
-namespace projectAnhedonia_back.Data.Entities.Dto
+namespace projectAnhedonia_back.Data.Entities.Dto.Database
 {
     public sealed class PostView
     {
         public string Title { get; set; }
         public long? AuthorId { get; set; }
         public string Content { get; set; }
+
+        public IEnumerable<long> Comments { get; set; }
 
         public DateTime CreationDateTime { get; set; }
         // public long? PreviewImageId { get; set; }
@@ -22,6 +25,7 @@ namespace projectAnhedonia_back.Data.Entities.Dto
             return new ArticleViewDto(
                 data.Title,
                 data.AuthorId,
+                data.Comments,
                 data.Content,
                 data.CreationDateTime
             );

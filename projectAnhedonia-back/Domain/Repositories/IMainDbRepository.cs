@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using projectAnhedonia_back.Data.Entities.Dto;
 using projectAnhedonia_back.Domain.Entities.Dto;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
+using projectAnhedonia_back.Domain.Entities.Dto.Comment;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
 
 namespace projectAnhedonia_back.Domain.Repositories
@@ -28,6 +29,8 @@ namespace projectAnhedonia_back.Domain.Repositories
         public Task RemoveArticleById(long selfId, long articleId);
 
         public Task UpdateArticle(ArticleUpdateDto data);
+
+        public Task CreateComment(CommentCreateDto data);
 
         // ======= only for test =======
         public Task<IEnumerable<UserProfileDto>> GetAllUsers();

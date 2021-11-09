@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
+using projectAnhedonia_back.Domain.Entities.Dto.Comment;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
 using projectAnhedonia_back.Domain.Repositories;
 using projectAnhedonia_back.Presentation.Entities.Dto.Article;
@@ -58,6 +59,11 @@ namespace projectAnhedonia_back.Domain.Interactors
         public Task<ArticleViewDto> GetArticleById(long id)
         {
             return _mainDbRepository.GetArticleById(id);
+        }
+
+        public Task CreateComment(CommentCreateDto data)
+        {
+            return _mainDbRepository.CreateComment(data);
         }
     }
 }

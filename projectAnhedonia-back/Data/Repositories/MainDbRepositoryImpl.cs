@@ -8,6 +8,7 @@ using projectAnhedonia_back.Data.Entities.Dto;
 using projectAnhedonia_back.Data.Entities.Dto.Database;
 using projectAnhedonia_back.Data.Models.Database.Main;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
+using projectAnhedonia_back.Domain.Entities.Dto.Comment;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
 using projectAnhedonia_back.Domain.Entities.Exceptions;
 using projectAnhedonia_back.Domain.Repositories;
@@ -181,6 +182,21 @@ namespace projectAnhedonia_back.Data.Repositories
                     };
                 })
                 .MapResult(p => p.ConvertToDomainLayer());
+        }
+
+        public Task CreateComment(CommentCreateDto data)
+        {
+            return _context
+                .CreateComment(data.ConvertToDataLayer())
+                .MapError(errors =>
+                {
+                    var error = errors[0];
+                    return error switch
+                    {
+                        DbUpdateException => new InvalidEntityKeyException("the database already contains this key"),
+                        _ => new UnknownException(error.Message)
+                    };
+                });
         }
     }
 }

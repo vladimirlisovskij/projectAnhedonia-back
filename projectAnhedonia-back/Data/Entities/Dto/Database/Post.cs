@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
 
 #nullable disable

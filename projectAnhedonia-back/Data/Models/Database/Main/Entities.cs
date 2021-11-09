@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projectAnhedonia_back.Data.Entities.Dto;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 
 namespace projectAnhedonia_back.Data.Models.Database.Main
 {

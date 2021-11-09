@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projectAnhedonia_back.Data.Common;
 using projectAnhedonia_back.Data.Entities.Dto;
+using projectAnhedonia_back.Data.Entities.Dto.Database;
 
 namespace projectAnhedonia_back.Data.Models.Database.Main
 {
@@ -66,7 +67,7 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.SetNull);
 
-                entity.HasOne(d => d.Article)
+                entity.HasOne(d => d.Post)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.PostId);
             });
