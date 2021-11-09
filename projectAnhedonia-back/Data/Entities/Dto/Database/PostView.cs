@@ -13,6 +13,9 @@ namespace projectAnhedonia_back.Data.Entities.Dto.Database
         public string Content { get; set; }
 
         public IEnumerable<long> Comments { get; set; }
+        public IEnumerable<long> Coauthors { get; set; }
+        
+        public  string ImageName { get; set; }
 
         public DateTime CreationDateTime { get; set; }
         // public long? PreviewImageId { get; set; }
@@ -26,6 +29,8 @@ namespace projectAnhedonia_back.Data.Entities.Dto.Database
                 data.Title,
                 data.AuthorId,
                 data.Comments,
+                data.Coauthors,
+                data.ImageName,
                 data.Content,
                 data.CreationDateTime
             );

@@ -54,6 +54,12 @@ namespace projectAnhedonia_back.Data.Repositories
                 });
         }
 
+        public Task<long> GetUserIdByUsername(string username)
+        {
+            return _context
+                .GetUserIdByUserName(username);
+        }
+
         public Task RemoveUserById(long id)
         {
             return _context
@@ -121,7 +127,7 @@ namespace projectAnhedonia_back.Data.Repositories
             return _context.GetUserIdByCreds(creds.ConvertToDataLayer());
         }
 
-        public Task CreateArticle(ArticleRegistrationDto data)
+        public Task<long> CreateArticle(ArticleRegistrationWithImageNameDto data)
         {
             return _context
                 .AddArticle(data.ConvertToDataLayer())
@@ -151,7 +157,7 @@ namespace projectAnhedonia_back.Data.Repositories
                 });
         }
 
-        public Task RemoveArticleById(long selfId, long articleId)
+        public Task<string> RemoveArticleById(long selfId, long articleId)
         {
             return _context
                 .RemoveArticleById(selfId, articleId)
@@ -197,6 +203,42 @@ namespace projectAnhedonia_back.Data.Repositories
                         _ => new UnknownException(error.Message)
                     };
                 });
+        }
+
+        public Task<CommentViewDto> GetCommentById(long id)
+        {
+            return _context
+                .GetCommentById(id)
+                .MapResult(c => c.ConvertToDomainLayer());
+        }
+
+        public Task RemoveCommentById(long selfId, long commentId)
+        {
+            return _context
+                .DeleteCommentById(selfId, commentId);
+        }
+
+        public Task UpdateCommentById(CommentUpdateDto data)
+        {
+            return _context
+                .UpdateComment(data.ConvertToDataLayer());
+        }
+
+        public Task AddCoauthor(long selfId, long articleId, long coauthorId)
+        {
+            return _context
+                .AddCoauthorById(selfId, articleId, coauthorId);
+        }
+
+        public Task RemoveCoauthor(long selfId, long articleId, long coauthorId)
+        {
+            return _context
+                .RemoveCoauthorById(selfId, articleId, coauthorId);
+        }
+
+        public int AddImage(long articleId, string name)
+        {
+            return _context.AddImage(articleId, name);
         }
     }
 }

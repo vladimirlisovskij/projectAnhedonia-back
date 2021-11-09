@@ -7,7 +7,7 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Comment
         public string Content { get; set; }
         public long PostId { get; set; }
     }
-    
+
     public static partial class Mapper
     {
         public static CommentCreateDto ConvertToDomainLayer(this CommentCreateResponseDto data, long uid)

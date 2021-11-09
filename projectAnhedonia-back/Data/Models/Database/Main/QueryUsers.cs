@@ -74,5 +74,13 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                 })
                 .FirstAsync();
         }
+
+        public Task<long> GetUserIdByUserName(string usename)
+        {
+            return Users
+                .Where(u => u.Username == usename)
+                .Select(u => u.Id)
+                .FirstAsync();
+        }
     }
 }

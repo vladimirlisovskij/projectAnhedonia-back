@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using projectAnhedonia_back.Data.Entities.Dto.Database;
-using projectAnhedonia_back.Domain.Entities.Dto;
+using projectAnhedonia_back.Data.Common;
 using projectAnhedonia_back.Domain.Entities.Dto.User;
 
 #nullable disable
 
-namespace projectAnhedonia_back.Data.Entities.Dto
+namespace projectAnhedonia_back.Data.Entities.Dto.Database
 {
     public sealed class User
     {
@@ -21,7 +18,7 @@ namespace projectAnhedonia_back.Data.Entities.Dto
         public string Password
         {
             get => _password;
-            set => _password = sha256_hash(value);
+            set => _password = Tools.sha256_hash(value);
         }
 
         public void SetShaPassword(string shaPassword)
@@ -41,22 +38,6 @@ namespace projectAnhedonia_back.Data.Entities.Dto
             CoauthorsRecords = new HashSet<Coauthor>();
             Comments = new HashSet<Comment>();
             Posts = new HashSet<Post>();
-        }
-
-        private string sha256_hash(string value)
-        {
-            StringBuilder Sb = new StringBuilder();
-
-            using (var hash = SHA256.Create())
-            {
-                Encoding enc = Encoding.UTF8;
-                Byte[] result = hash.ComputeHash(enc.GetBytes(value));
-
-                foreach (Byte b in result)
-                    Sb.Append(b.ToString("x2"));
-            }
-
-            return Sb.ToString();
         }
     }
 

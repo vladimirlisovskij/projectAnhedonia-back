@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using projectAnhedonia_back.Data.Entities.Dto.Database;
 using projectAnhedonia_back.Domain.Entities.Dto.Article;
 
 #nullable disable
 
-namespace projectAnhedonia_back.Data.Entities.Dto
+namespace projectAnhedonia_back.Data.Entities.Dto.Database
 {
     public sealed class Post
     {
@@ -27,10 +26,10 @@ namespace projectAnhedonia_back.Data.Entities.Dto
             Comments = new HashSet<Comment>();
         }
     }
-    
+
     public static partial class Mapper
     {
-        public static Post ConvertToDataLayer(this ArticleRegistrationDto data)
+        public static Post ConvertToDataLayer(this ArticleRegistrationWithImageNameDto data)
         {
             return new Post
             {
@@ -40,7 +39,7 @@ namespace projectAnhedonia_back.Data.Entities.Dto
                 CreationDateTime = DateTime.Now,
             };
         }
-        
+
         public static Post ConvertToDataLayer(this ArticleUpdateDto data)
         {
             return new Post

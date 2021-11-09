@@ -7,7 +7,8 @@ namespace projectAnhedonia_back.Domain.Entities.Dto.Article
         string Title,
         long? AuthorId,
         IEnumerable<long> Comments,
-        // IEnumerable<long> Coauthors,
+        IEnumerable<long> Coauthors,
+        string ImageName,
         string Content,
         DateTime CreationDateTime
         // TODO add comments and image

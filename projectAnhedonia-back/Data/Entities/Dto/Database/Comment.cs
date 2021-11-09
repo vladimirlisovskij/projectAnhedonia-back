@@ -30,5 +30,24 @@ namespace projectAnhedonia_back.Data.Entities.Dto.Database
                 CreationDateTime = DateTime.Now,
             };
         }
+        
+        public static Comment ConvertToDataLayer(this CommentUpdateDto data)
+        {
+            return new Comment
+            {
+                AuthorId = data.AuthorId,
+                Content = data.Content,
+                Id = data.CommentId
+            };
+        }
+        
+        public static CommentViewDto ConvertToDomainLayer(this Comment data)
+        {
+            return new CommentViewDto(
+                data.AuthorId,
+                data.Content,
+                data.CreationDateTime
+            );
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace projectAnhedonia_back.Data.Entities.Dto
+namespace projectAnhedonia_back.Data.Entities.Dto.Database
 {
     public sealed class Image
     {

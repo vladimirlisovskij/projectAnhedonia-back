@@ -13,8 +13,12 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
         public string Content { get; set; }
         
         public IEnumerable<long> Comments { get; set; }
+        
+        public IEnumerable<long> Coauthors { get; set; }
 
         public DateTime CreationDateTime { get; set; }
+        
+        public string ImagePath { get; set; }
     }
     
     public static partial class Mapper
@@ -26,8 +30,10 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
                 Title = articleView.Title,
                 Content = articleView.Content,
                 AuthorId = articleView.AuthorId,
+                Coauthors = articleView.Coauthors,
                 CreationDateTime = articleView.CreationDateTime,
-                Comments = articleView.Comments
+                Comments = articleView.Comments,
+                ImagePath = articleView.ImageName
             };
         }
     }

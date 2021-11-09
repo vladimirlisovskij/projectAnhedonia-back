@@ -1,4 +1,5 @@
-﻿using projectAnhedonia_back.Domain.Entities.Dto.Article;
+﻿using Microsoft.AspNetCore.Http;
+using projectAnhedonia_back.Domain.Entities.Dto.Article;
 
 namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
 {
@@ -7,6 +8,8 @@ namespace projectAnhedonia_back.Presentation.Entities.Dto.Article
         public string Title { get; set; }
         public long Id { get; set; }
         public string Content { get; set; }
+        
+        public IFormFile Image { get; set; }
     }
 
     public static partial class Mapper

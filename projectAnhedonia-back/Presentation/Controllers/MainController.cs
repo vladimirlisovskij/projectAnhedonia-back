@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -72,8 +73,16 @@ namespace projectAnhedonia_back.Presentation.Controllers
                 .ConvertToResult("Get user profile by id");
         }
 
+        [HttpPost("getUserId")]
+        public async Task<Result<long>> GetUserIdByUsername([FromQuery] string username)
+        {
+            return await _mainDbInteractor
+                .GetUserIdByUsername(username)
+                .ConvertToResult($"User id for user {username}");
+        }
+
         [HttpPost("createSelfArticle")]
-        public async Task<Result> CreateArticle([FromBody] ArticleRegistrationResponseDto article)
+        public async Task<Result> CreateArticle([FromForm] ArticleRegistrationResponseDto article)
         {
             var uid = ExtractUserIdFromBearer();
             return await _mainDbInteractor
@@ -134,6 +143,60 @@ namespace projectAnhedonia_back.Presentation.Controllers
             return await _mainDbInteractor
                 .CreateComment(data.ConvertToDomainLayer(uid))
                 .ConvertToResult("Comment created");
+        }
+
+        [HttpPost("updateSelfComment")]
+        public async Task<Result> UpdateComment([FromBody] CommentUpdateResponseDto data)
+        {
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .UpdateCommentById(data.ConvertToDomainLayer(uid))
+                .ConvertToResult("User comment updated");
+        }
+
+        [HttpPost("getComment")]
+        public async Task<Result<CommentViewResponseDto>> GetCommentById([FromQuery] long id)
+        {
+            return await _mainDbInteractor
+                .GetCommentById(id)
+                .MapResult(c => c.ConvertToPresentationLayer())
+                .ConvertToResult("Get user comment");
+        }
+
+        [HttpDelete("removeSelfComment")]
+        public async Task<Result> RemoveSelfCommentById([FromQuery] long id)
+        {
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .RemoveCommentById(uid, id)
+                .ConvertToResult("User comment deleted");
+        }
+
+        [HttpPost("addSelfCoauthor")]
+        public async Task<Result> AddCoauthorById([FromQuery] long articleId, [FromQuery] long coauthorId)
+        {
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .AddCoauthor(uid, articleId, coauthorId)
+                .ConvertToResult($"Added coauthor {coauthorId} to article {articleId}");
+        }
+
+        [HttpDelete("deleteSelfCoauthor")]
+        public async Task<Result> RemoveCoauthorById([FromQuery] long articleId, [FromQuery] long coauthorId)
+        {
+            var uid = ExtractUserIdFromBearer();
+            return await _mainDbInteractor
+                .RemoveCoauthor(uid, articleId, coauthorId)
+                .ConvertToResult($"Removed coauthor {coauthorId} from article {articleId}");
+        }
+
+        [HttpGet("image/{name}")]
+        public IActionResult GetImage(string name)
+        {
+            var path = _mainDbInteractor.GetImagePathByName(name);
+            var type = "image/" + path.Split(".").Last();
+            
+            return PhysicalFile(path, type);
         }
 
         private long ExtractUserIdFromBearer()

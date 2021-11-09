@@ -33,7 +33,7 @@ namespace projectAnhedonia_back.Data.Models.Database.Main
                 entity.HasIndex(e => new { e.PostId, e.UserId }, "Coauthors_Index")
                     .IsUnique();
 
-                entity.HasOne(d => d.Article)
+                entity.HasOne(d => d.Post)
                     .WithMany(p => p.Coauthors)
                     .HasForeignKey(d => d.PostId);
 
